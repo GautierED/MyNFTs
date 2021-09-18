@@ -1,0 +1,28 @@
+{
+  "name": "mynfts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GautierED/MyNFTs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GautierED/MyNFTs/issues"
+  },
+  "homepage": "https://github.com/GautierED/MyNFTs#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "ethers": "^5.4.7",
+    "hardhat": "^2.6.4"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "web3": "^1.5.2"
+  }
+}
