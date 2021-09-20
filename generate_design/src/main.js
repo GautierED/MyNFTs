@@ -12,6 +12,8 @@ if (!process.env.PWD) {
 
 const buildDir = `${process.env.PWD}/build`;
 const metDataFile = '_metadata.json';
+const metadataStart = 'metadata';
+const metadataEnd = '.json';
 const layersDir = `${process.env.PWD}/layers`;
 
 let metadata = [];
@@ -90,6 +92,7 @@ const addMetadata = _edition => {
     attributes: attributes,
   };
   metadata.push(tempMetadata);
+  //console.log(metadata);
   attributes = [];
   hash = [];
   decodedHash = [];
@@ -131,7 +134,7 @@ const createFiles = async edition => {
   const layers = layersSetup(layersOrder);
 
   let numDupes = 0;
- for (let i = 1; i <= edition; i++) {
+ for (let i = 0; i < edition; i++) {
    await layers.forEach(async (layer) => {
      await drawLayer(layer, i);
    });
@@ -147,17 +150,19 @@ const createFiles = async edition => {
      if (numDupes > edition) break; //prevents infinite loop if no more unique items can be created
      i--;
    } else {
+     console.log("Creating edition " + i);
      Exists.set(key, i);
      addMetadata(i);
-     console.log("Creating edition " + i);
+     console.log(metadata);
+     createMetaData(i, metadata[i]);
    }
  }
 };
 
-const createMetaData = () => {
-  fs.stat(`${buildDir}/${metDataFile}`, (err) => {
+const createMetaData = (_edition, _metadata) => {
+  fs.stat(`${buildDir}/${metadataStart}${_edition}${metadataEnd}`, (err) => {
     if(err == null || err.code === 'ENOENT') {
-      fs.writeFileSync(`${buildDir}/${metDataFile}`, JSON.stringify(metadata, null, 2));
+      fs.writeFileSync(`${buildDir}/${metadataStart}${_edition}${metadataEnd}`, JSON.stringify(_metadata, null, 2));
     } else {
         console.log('Oh no, error: ', err.code);
     }
