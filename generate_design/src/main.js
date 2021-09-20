@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { createCanvas, loadImage } = require("canvas");
 const console = require("console");
-const { layersOrder, format, rarity } = require("./config.js");
+const { layersOrder, format } = require("./config.js");
 
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
@@ -10,36 +10,19 @@ if (!process.env.PWD) {
   process.env.PWD = process.cwd();
 }
 
-const buildDir = `${process.env.PWD}/build`;
-const metDataFile = '_metadata.json';
-const metadataStart = 'metadata';
-const metadataEnd = '.json';
+const buildDirImages = `${process.env.PWD}/build/images`;
+const buildDirMetadata = `${process.env.PWD}/build/metadata`;
 const layersDir = `${process.env.PWD}/layers`;
 
 let metadata = [];
 let attributes = [];
 let hash = [];
 let decodedHash = [];
+let URI = [];
 const Exists = new Map();
-
-
-const addRarity = _str => {
-  let itemRarity;
-
-  rarity.forEach((r) => {
-    if (_str.includes(r.key)) {
-      itemRarity = r.val;
-    }
-  });
-
-  return itemRarity;
-};
 
 const cleanName = _str => {
   let name = _str.slice(0, -4);
-  rarity.forEach((r) => {
-    name = name.replace(r.key, "");
-  });
   return name;
 };
 
@@ -51,8 +34,7 @@ const getElements = path => {
       return {
         id: index + 1,
         name: cleanName(i),
-        fileName: i,
-        rarity: addRarity(i),
+        fileName: i
       };
     });
 };
@@ -72,27 +54,27 @@ const layersSetup = layersOrder => {
 };
 
 const buildSetup = () => {
-  if (fs.existsSync(buildDir)) {
-    fs.rmdirSync(buildDir, { recursive: true });
+  if (fs.existsSync(buildDirImages)) {
+    fs.rmdirSync(buildDirImages, { recursive: true });
   }
-  fs.mkdirSync(buildDir);
+  fs.mkdirSync(buildDirImages);
+
+  if (fs.existsSync(buildDirMetadata)) {
+    fs.rmdirSync(buildDirMetadata, { recursive: true });
+  }
+  fs.mkdirSync(buildDirMetadata);
 };
 
 const saveLayer = (_canvas, _edition) => {
-  fs.writeFileSync(`${buildDir}/${_edition}.png`, _canvas.toBuffer("image/png"));
+  fs.writeFileSync(`${buildDirImages}/${_edition}.png`, _canvas.toBuffer("image/png"));
 };
 
 const addMetadata = _edition => {
-  let dateTime = Date.now();
   let tempMetadata = {
-    hash: hash.join(""),
-    decodedHash: decodedHash,
-    edition: _edition,
-    date: dateTime,
+    image: _edition,
     attributes: attributes,
   };
   metadata.push(tempMetadata);
-  //console.log(metadata);
   attributes = [];
   hash = [];
   decodedHash = [];
@@ -100,10 +82,8 @@ const addMetadata = _edition => {
 
 const addAttributes = (_element, _layer) => {
   let tempAttr = {
-    id: _element.id,
-    layer: _layer.name,
-    name: _element.name,
-    rarity: _element.rarity,
+    trait_type: _layer.name,
+    value: _element.name,
   };
   attributes.push(tempAttr);
   hash.push(_layer.id);
@@ -153,16 +133,15 @@ const createFiles = async edition => {
      console.log("Creating edition " + i);
      Exists.set(key, i);
      addMetadata(i);
-     console.log(metadata);
      createMetaData(i, metadata[i]);
    }
  }
 };
 
 const createMetaData = (_edition, _metadata) => {
-  fs.stat(`${buildDir}/${metadataStart}${_edition}${metadataEnd}`, (err) => {
+  fs.stat(`${buildDirMetadata}/${_edition}`, (err) => {
     if(err == null || err.code === 'ENOENT') {
-      fs.writeFileSync(`${buildDir}/${metadataStart}${_edition}${metadataEnd}`, JSON.stringify(_metadata, null, 2));
+      fs.writeFileSync(`${buildDirMetadata}/${_edition}`, JSON.stringify(_metadata));
     } else {
         console.log('Oh no, error: ', err.code);
     }
