@@ -1,7 +1,6 @@
 creating NFTs :
-- NFT smart contract with minting function, generate URI
-- generate images randomly from differents layers 
-- add those NFTs to IPFS 
+- NFT smart contract with minting function
+- generate images and metadata randomly from differents layers 
 
 using Solidity / Hardhat / Ethers to create and deploy the smart contract
 , using https://github.com/HashLips/generative-art-node to generate random images
