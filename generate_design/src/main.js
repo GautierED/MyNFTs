@@ -2,6 +2,7 @@ const fs = require("fs");
 const { createCanvas, loadImage } = require("canvas");
 const console = require("console");
 const { layersOrder, format } = require("./config.js");
+const Hash = require('ipfs-only-hash');
 
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
@@ -18,7 +19,7 @@ let metadata = [];
 let attributes = [];
 let hash = [];
 let decodedHash = [];
-let URI = [];
+let CID = [];
 const Exists = new Map();
 
 const cleanName = _str => {
@@ -69,9 +70,15 @@ const saveLayer = (_canvas, _edition) => {
   fs.writeFileSync(`${buildDirImages}/${_edition}.png`, _canvas.toBuffer("image/png"));
 };
 
+hashCanvas = async (_canvas) => {
+  buffer = await _canvas.toBuffer();
+  const imageHash = await Hash.of(buffer);
+  return imageHash
+}
+
 const addMetadata = _edition => {
   let tempMetadata = {
-    image: _edition,
+    image: 'ipfs://' + hash,
     attributes: attributes,
   };
   metadata.push(tempMetadata);
@@ -132,6 +139,8 @@ const createFiles = async edition => {
    } else {
      console.log("Creating edition " + i);
      Exists.set(key, i);
+     hash = await hashCanvas(canvas);
+     console.log(hash);
      addMetadata(i);
      createMetaData(i, metadata[i]);
    }
