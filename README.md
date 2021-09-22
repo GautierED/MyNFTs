@@ -1,4 +1,3 @@
-MyNFTs :
 This project let you create NFTs from scratch without any coding knowledge.
 To create NFTs you need to do 2 things : 
 - create a solidity smart contract with a minting & setBaseURI functions
