@@ -1,6 +1,6 @@
 This project let you create NFTs from scratch without any coding knowledge.
 To create NFTs you need to do 2 things : 
-- create a solidity smart contract with a minting & setBaseURI functions
+- create a solidity smart contract with a minting & setBaseURI functions.
 this smart contract will define how many NFTs will be mint, how much can be minted per one person and its price
 
 - generate images and metadata randomly from differents layers 
