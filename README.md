@@ -1,10 +1,10 @@
 This project let you create NFTs from scratch without any coding knowledge.
 To create NFTs you need to do 2 things : 
 - create a solidity smart contract with a minting & setBaseURI functions.
-this smart contract will define how many NFTs will be mint, how much can be minted per one person and its price
+this smart contract will define how many NFTs will be minted, how many can be minted per one person and the NFT's price
 
 - generate images and metadata randomly from differents layers 
-you will need to create images for each one of you NFTs. Thanks to https://github.com/HashLips/generative-art-node code, we just need to create layers we want to use
+you will need to create images for each one of you NFTs. Thanks to https://github.com/HashLips/generative-art-node code, we just need to create the layers we want to use. don't forget to modify config.js file accordingly to your layers.
 I modified it so it generates 2 folders : one for the metadatas and another one for the images. I added the URI generation to make it way much easier. Each images has its own CID generated from the hash function. This CID is added to the metadata.
 
 Tech used :
