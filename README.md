@@ -14,7 +14,7 @@ Tech used :
 
 Step to generate your NFTs and upload them to IPFS : 
 - create your layers 
-- modify generate_design folder according to your layers
+- modify generate_design/src/config.js according to your layers
 - generate images from the layers  
 - upload the metadata folder to Pinata
 - upload each images to Pinata
