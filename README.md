@@ -4,7 +4,7 @@ MyNFTs :
 
 Tech used :
 - Solidity / Hardhat / Ethers to create and deploy the smart contract
-- https://github.com/HashLips/generative-art-node to generate random images, modified it to generate metadata & URI for each images
+- https://github.com/HashLips/generative-art-node to generate random images -> I modified it to generate metadata & URI for each images
 
 Step to generate your NFTs and upload them to IPFS : 
 - compile and deploy the solidity smart contract to ethereum / bsc 
